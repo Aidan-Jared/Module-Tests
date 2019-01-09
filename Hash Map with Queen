@@ -1,0 +1,56 @@
+import math
+import os
+import random
+import re
+import sys
+
+def move(n,qx,qy,dx,dy,obstaclesH):
+    movedist = 0
+    for i in range(n+1):
+        qx += dx
+        qy += dy
+        if str(qx) + str(qy) in obstaclesH:
+            if obstaclesH[str(qx) + str(qy)] == [qx,qy]:
+                return movedist
+        if qx < 1 or qx > n or qy < 1 or qy > n:
+            return movedist
+        else:
+            movedist += 1
+
+def queensAttack(n, k, r_q, c_q, obstacles):
+    obstaclesH = {}
+    for i in obstacles:
+        obstaclesH[str(i[0])+str(i[1])] = i
+    right = move(n,r_q,c_q, 1, 0, obstaclesH)
+    left = move(n,r_q,c_q, -1, 0, obstaclesH)
+    up = move(n,r_q,c_q, 0, 1, obstaclesH)
+    down = move(n,r_q,c_q, 0, -1, obstaclesH)
+    rDiaUp = move(n,r_q,c_q, 1, 1, obstaclesH)
+    rDiaD = move(n,r_q,c_q, 1, -1, obstaclesH)
+    lDiaUp = move(n,r_q,c_q, -1, 1, obstaclesH)
+    lDiaD = move(n,r_q,c_q, -1, -1, obstaclesH)
+    return right + left + up + down + rDiaUp + rDiaD + lDiaUp + lDiaD
+
+
+if __name__ == '__main__':
+
+    nk = raw_input().split()
+
+    n = int(nk[0])
+
+    k = int(nk[1])
+
+    r_qC_q = raw_input().split()
+
+    r_q = int(r_qC_q[0])
+
+    c_q = int(r_qC_q[1])
+
+    obstacles = []
+
+    for _ in xrange(k):
+        obstacles.append(map(int, raw_input().rstrip().split()))
+
+    result = queensAttack(n, k, r_q, c_q, obstacles)
+    
+    print result
